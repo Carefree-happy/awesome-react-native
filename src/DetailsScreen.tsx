@@ -2,9 +2,13 @@ import { Button, Text, View } from "react-native";
 
 interface DetailsScreenProps {
     navigation: any,
+    route: any,
 }
 
-function DetailsScreen({ navigation }: DetailsScreenProps) {
+function DetailsScreen({ navigation, route }: DetailsScreenProps) {
+    /* 2. Get the param */
+    const { itemId, otherParam } = route.params;
+
     return <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
         <Text>Details Screen</Text>
 
@@ -19,6 +23,35 @@ function DetailsScreen({ navigation }: DetailsScreenProps) {
 
         {/* go to first screen */}
         <Button title='Go to the first screen' onPress={() => { navigation.popToTop() }}/>
+
+        <Text>itemId: {JSON.stringify(itemId)}</Text>
+        <Text>otherParam: {JSON.stringify(otherParam)}</Text>
+
+        {/* 3. go and get the param */}
+        <Button title='Go to Details... again'
+            onPress={() =>
+                navigation.push('Details', {
+                    itemId: Math.floor(Math.random() * 100),
+                })
+            }
+        />
+
+        {/* 4. updating params */}
+        <Button title='updating params' onPress={() => {
+            navigation.setParams({
+                itemId: 4444, 
+                otherParam: 'updating params',
+            });
+        }}/>
+
+        {/* 5. Passing params to a previous screen */}
+        <Button title='passing params to a previous screen' onPress={() => {
+            navigation.navigate({
+                name: 'Home',
+                params: { post: '11111' },
+                merge: true,
+            });
+        }}/>
     </View>
 }
 
