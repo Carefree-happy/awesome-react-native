@@ -9,10 +9,21 @@ import { FontAwesome5 } from '@expo/vector-icons';
 
 import plus from './assets/plus.png';
 
+import { MultiLineInput } from './src/components/TextInputCommon';
+import Fonts from './src/components/TestFonts';
+
 const Tab = createBottomTabNavigator();
 
 export default function App() {
 	const tabOffsetValue = useRef(new Animated.Value(0)).current;
+
+	const tabPressAnimation = (i: number, e: any) => {
+		Animated.spring(tabOffsetValue, {
+			toValue: getWidth() * i,
+			useNativeDriver: true,
+		}).start();
+	}
+
 	return (
 		<NavigationContainer>
 			<Tab.Navigator initialRouteName='Home' screenOptions={{
@@ -38,32 +49,22 @@ export default function App() {
 				<Tab.Screen name={'Home'} component={HomeScreen} options={{
 					tabBarIcon: ({ focused }) => (
 						<View style={{ position: 'absolute', top: '50%' }}>
-							<FontAwesome5 name='home' size={20} color={focused ? 'red' : 'gray'}/>
+							<FontAwesome5 name='home' size={20} color={focused ? 'red' : 'gray'} />
 						</View>
 					)
-				}} listeners={({navigation, route}) => ({
-					tabPress: e => {
-						Animated.spring(tabOffsetValue, {
-							toValue: 0,
-							useNativeDriver: true,
-						}).start();
-					}
-				})}/>
+				}} listeners={({ navigation, route }) => ({
+					tabPress: e => tabPressAnimation(0, e)
+				})} />
 
 				<Tab.Screen name={'Notification'} component={NotificationScreen} options={{
 					tabBarIcon: ({ focused }) => (
 						<View style={{ position: 'absolute', top: '50%' }}>
-							<FontAwesome5 name='search' size={20} color={focused ? 'red' : 'gray'}/>
+							<FontAwesome5 name='search' size={20} color={focused ? 'red' : 'gray'} />
 						</View>
 					)
-				}} listeners={({navigation, route}) => ({
-					tabPress: e => {
-						Animated.spring(tabOffsetValue, {
-							toValue: getWidth(),
-							useNativeDriver: true,
-						}).start();
-					}
-				})}/>
+				}} listeners={({ navigation, route }) => ({
+					tabPress: e => tabPressAnimation(1, e)
+				})} />
 
 				<Tab.Screen name={'ActionButton'} component={EmptyScreen} options={{
 					tabBarIcon: ({ focused }) => (
@@ -72,7 +73,7 @@ export default function App() {
 								width: 55,
 								height: 55,
 								backgroundColor: 'red',
-								borderRadius: '50%',
+								borderRadius: 100,
 								justifyContent: 'center',
 								alignItems: 'center',
 								marginBottom: 30,
@@ -81,7 +82,7 @@ export default function App() {
 									width: 22,
 									height: 22,
 									tintColor: 'white',
-								}}/>
+								}} />
 							</View>
 						</TouchableOpacity>
 					)
@@ -90,31 +91,22 @@ export default function App() {
 				<Tab.Screen name={'Search'} component={SearchScreen} options={{
 					tabBarIcon: ({ focused }) => (
 						<View style={{ position: 'absolute', top: '50%' }}>
-							<FontAwesome5 name='bell' size={20} color={focused ? 'red' : 'gray'}/>
+							<FontAwesome5 name='bell' size={20} color={focused ? 'red' : 'gray'} />
 						</View>
 					)
-				}} listeners={({navigation, route}) => ({
-					tabPress: e => {
-						Animated.spring(tabOffsetValue, {
-							toValue: getWidth() * 3,
-							useNativeDriver: true,
-						}).start();
-					}
-				})}/>
+				}} listeners={({ navigation, route }) => ({
+					tabPress: e => tabPressAnimation(3, e)
+				})} />
+
 				<Tab.Screen name={'Setting'} component={SettingScreen} options={{
 					tabBarIcon: ({ focused }) => (
 						<View style={{ position: 'absolute', top: '50%' }}>
-							<FontAwesome5 name='user-alt' size={20} color={focused ? 'red' : 'gray'}/>
+							<FontAwesome5 name='user-alt' size={20} color={focused ? 'red' : 'gray'} />
 						</View>
 					)
-				}} listeners={({navigation, route}) => ({
-					tabPress: e => {
-						Animated.spring(tabOffsetValue, {
-							toValue: getWidth() * 4,
-							useNativeDriver: true,
-						}).start();
-					}
-				})}/>
+				}} listeners={({ navigation, route }) => ({
+					tabPress: e => tabPressAnimation(4, e)
+				})} />
 			</Tab.Navigator>
 
 			<Animated.View style={{
@@ -127,7 +119,7 @@ export default function App() {
 				left: 50,
 				borderRadius: 20,
 				transform: [
-				  { translateX: tabOffsetValue }
+					{ translateX: tabOffsetValue }
 				]
 			}}></Animated.View>
 		</NavigationContainer>
@@ -136,13 +128,13 @@ export default function App() {
 
 function getWidth() {
 	let width = Dimensions.get("window").width
-  
+
 	// Horizontal Padding = 20...
 	width = width - 80
-  
+
 	// Total five Tabs...
 	return width / 5
-  }
+}
 
 
 function EmptyScreen() {
@@ -155,7 +147,9 @@ function EmptyScreen() {
 function HomeScreen() {
 	return (
 		<View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-			<Text>Home!</Text>
+			<Text>Hometown!</Text>
+			<Fonts></Fonts>
+			{/* <MultiLineInput /> */}
 		</View>
 	);
 }
